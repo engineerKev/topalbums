@@ -82,7 +82,7 @@ export default function TopAlbums({ topAlbums, showLoadingState }: TopAlbumsProp
                       <Skeleton />
                       :
                       (<AlbumInfo>
-                        {showMoreInfo ?
+                        {showMoreInfo || isMobile ?
                           (
                             <>
                               <InfoDiv>{album.albumTitle}</InfoDiv>
@@ -95,19 +95,19 @@ export default function TopAlbums({ topAlbums, showLoadingState }: TopAlbumsProp
                       </AlbumInfo>)
                     }
                   </GridItem>
-                  <GridItem colStart={isMobile ? 4 : 3} colEnd={isMobile ? 5 : 4} rowStart={i + 1} rowEnd={i + 2}>
+                  <GridItem colStart={isMobile ? 4 : 3} colEnd={isMobile ? 5 : 4} rowStart={i + 1} rowEnd={i + 2} hideOnMobile={isMobile}>
                     {showLoadingState ? <Skeleton /> : <AlbumInfo>{showMoreInfo ? album.releaseDate : album.artistName}</AlbumInfo>}
                   </GridItem>
-                  <GridItem colStart={4} colEnd={5} rowStart={i + 1} rowEnd={i + 2} hideOnMobile={isMobile} >
+                  <GridItem colStart={4} colEnd={isMobile ? 6 : 5} rowStart={i + 1} rowEnd={i + 2}>
                     {showLoadingState ?
                       <Skeleton />
                       :
                       (<AlbumInfo>
-                        {showMoreInfo? album.genre : album.releaseDate}
+                        {showMoreInfo || isMobile ? album.genre : album.releaseDate}
                       </AlbumInfo>)
                     }
                   </GridItem>
-                  <GridItem colStart={5} colEnd={6} rowStart={i + 1} rowEnd={i + 2}>
+                  <GridItem colStart={5} colEnd={6} rowStart={i + 1} rowEnd={i + 2} hideOnMobile={isMobile}>
                     <MoreInfoButton onClick={(e) => setShowMoreInfo(!showMoreInfo)}>&hellip;</MoreInfoButton>
                   </GridItem>
                 </React.Fragment>
