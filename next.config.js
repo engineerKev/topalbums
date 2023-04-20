@@ -5,6 +5,7 @@ const path = require('path');
 
 const nextConfig = {
   /* config options here */
+  asssetPrefix: "/topalbums/",
   compiler: {
     styledComponents: true
   },
