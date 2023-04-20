@@ -34,7 +34,6 @@ function HomePage({topAlbums, heroAlbum}: PageProps) {
   const [loading, setLoading] = useState(false);
 
   const updateWithSearchResults = useCallback(() => {
-    debugger;
     const newTopAlbumsArray = statefulTopAlbums.filter((album) => {
       const albumTitleMatch = album.albumTitle.toLowerCase().includes(searchQuery);
       const artistNameMatch = album.artistName.toLowerCase().includes(searchQuery);
