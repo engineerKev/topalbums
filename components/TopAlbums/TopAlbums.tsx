@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { TopAlbum } from 'types/topAlbumConverter';
@@ -28,14 +28,26 @@ const NoResultsHeading = styled.h2`
   text-align: center;
   font-size: 2em;
 `;
-
+const MoreInfoButton = styled.button`
+  background-color: transparent;
+  border-radius: 50%;
+  font-size: 1em;
+  width: 2em;
+  height: 2em;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  cursor: pointer;
+`
 export default function TopAlbums({ topAlbums, showLoadingState }: TopAlbumsProps): JSX.Element {
   const { isMobile } = useWindowSize();
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
   const colWidth = topAlbums[0]?.albumCoverImgHeight || 55;
   const rowHeight = colWidth;
   return (
     <>
-      <TopAlbumsHeader isMobile={isMobile} />
+      <TopAlbumsHeader isMobile={isMobile} showMoreInfo={showMoreInfo} />
       {!topAlbums.length ? 
         <NoResultsHeading>Sorry No Albums to Display</NoResultsHeading>
         :
@@ -43,7 +55,6 @@ export default function TopAlbums({ topAlbums, showLoadingState }: TopAlbumsProp
           <Grid
             className={auxStyles.outline}
             colMin={colWidth}
-            gridRows={topAlbums.length - 1}
             rowMax={rowHeight}
             rowGap={8}
             colGap={6}
@@ -71,21 +82,33 @@ export default function TopAlbums({ topAlbums, showLoadingState }: TopAlbumsProp
                       <Skeleton />
                       :
                       (<AlbumInfo>
-                        <InfoDiv>{album.albumTitle}</InfoDiv>
+                        {showMoreInfo ?
+                          (
+                            <>
+                              <InfoDiv>{album.albumTitle}</InfoDiv>
+                              <InfoDiv>{album.artistName}</InfoDiv>
+                            </>
+                          )
+                          :
+                          <InfoDiv>{album.albumTitle}</InfoDiv>
+                        }
                       </AlbumInfo>)
                     }
                   </GridItem>
                   <GridItem colStart={isMobile ? 4 : 3} colEnd={isMobile ? 5 : 4} rowStart={i + 1} rowEnd={i + 2}>
-                    {showLoadingState ? <Skeleton /> : <AlbumInfo>{album.artistName}</AlbumInfo>}
+                    {showLoadingState ? <Skeleton /> : <AlbumInfo>{showMoreInfo ? album.releaseDate : album.artistName}</AlbumInfo>}
                   </GridItem>
-                  <GridItem colStart={4} colEnd={5} rowStart={i + 1} rowEnd={i + 2} hideOnMobile={isMobile}>
+                  <GridItem colStart={4} colEnd={5} rowStart={i + 1} rowEnd={i + 2} hideOnMobile={isMobile} >
                     {showLoadingState ?
                       <Skeleton />
                       :
                       (<AlbumInfo>
-                        {album.releaseDate}
+                        {showMoreInfo? album.genre : album.releaseDate}
                       </AlbumInfo>)
                     }
+                  </GridItem>
+                  <GridItem colStart={5} colEnd={6} rowStart={i + 1} rowEnd={i + 2}>
+                    <MoreInfoButton onClick={(e) => setShowMoreInfo(!showMoreInfo)}>&hellip;</MoreInfoButton>
                   </GridItem>
                 </React.Fragment>
               )

@@ -27,11 +27,11 @@ const defaultProps = {
   colMin: 0,
   colMax: '1fr',
   isFullWidth: false,
-  children: null
+  children: null,
 }
 const GridContainer = styled.div.attrs<Omit<GridProps, 'children'>>(props => ({
   style: {
-    gridTemplateColumns: `${props.colMin}px 1fr 1fr 1fr`,
+    gridTemplateColumns: `${props.colMin}px 1fr 1fr ${props.colMin*5}px ${props.colMin*1.25}px`,
     gridTemplateRows: `repeat(${props.gridRows}, ${props.rowMax}px)`,
     columnGap: `${props.colGap}px`,
     rowGap: `${props.rowGap}px`,
