@@ -1,0 +1,27 @@
+.box {
+    box-shadow: 0 0.175em 0.1375em rgba(0, 0, 0, 0.034),
+      0 0.4188em 0.3312em rgba(0, 0, 0, 0.048),
+      0 0.7813em 0.625em rgba(0, 0, 0, 0.06),
+      0 1.3938em 1.1187em rgba(0, 0, 0, 0.072),
+      0 2.6125em 2.0875em rgba(0, 0, 0, 0.086),
+      0 6.25em 5em rgba(0, 0, 0, 0.12)
+ }
+
+.outline {
+  border: 0.0625em solid #eef;
+    box-shadow: 
+      0 0.0625em 0.0625em hsl(0deg 0% 0% / 0.075),
+        0 0.125em 0.125em hsl(0deg 0% 0% / 0.075),
+        0 0.25em 0.25em hsl(0deg 0% 0% / 0.075),
+        0 0.5em 0.5em hsl(0deg 0% 0% / 0.075),
+        0 1em 1em hsl(0deg 0% 0% / 0.075)
+}
+
+.headingLabels {
+  font-size: 1.125em;
+  font-weight: 500;
+}
+
+.lowerBorder {
+  border-bottom: 0.0625em solid #aaa;
+}
