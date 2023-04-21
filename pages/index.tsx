@@ -35,8 +35,8 @@ function HomePage({topAlbums, heroAlbum}: PageProps) {
 
   const updateWithSearchResults = useCallback(() => {
     const newTopAlbumsArray = topAlbums.filter((album) => {
-      const albumTitleMatch = album.albumTitle.toLowerCase().includes(searchQuery);
-      const artistNameMatch = album.artistName.toLowerCase().includes(searchQuery);
+      const albumTitleMatch = album.albumTitle.toLowerCase().includes(searchQuery.toLocaleLowerCase());
+      const artistNameMatch = album.artistName.toLowerCase().includes(searchQuery.toLocaleLowerCase());
       return (albumTitleMatch || artistNameMatch);
     });
     const noResults = !Boolean(newTopAlbumsArray.length);
