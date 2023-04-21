@@ -37,7 +37,8 @@ function HomePage({topAlbums, heroAlbum}: PageProps) {
     const newTopAlbumsArray = topAlbums.filter((album) => {
       const albumTitleMatch = album.albumTitle.toLowerCase().includes(searchQuery.toLocaleLowerCase());
       const artistNameMatch = album.artistName.toLowerCase().includes(searchQuery.toLocaleLowerCase());
-      return (albumTitleMatch || artistNameMatch);
+      const genreMatch = album.genre.toLowerCase().includes(searchQuery.toLocaleLowerCase());
+      return (albumTitleMatch || artistNameMatch || genreMatch);
     });
     const noResults = !Boolean(newTopAlbumsArray.length);
     return noResults ? [] : [...newTopAlbumsArray] 

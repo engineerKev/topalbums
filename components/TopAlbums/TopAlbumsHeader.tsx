@@ -17,7 +17,7 @@ const AlignmentCell = styled.div`
 `
 export default function TopAlbumsHeader({ isMobile, showMoreInfo }: TopAlbumsHeaderProps): JSX.Element {
   const albumArtistText = isMobile ? 'Album/Artist' : 'Album & Artist';
-  const genreReleaseDateText = isMobile ? 'Genere' : 'Release Date'
+  const genreReleaseDateText = isMobile ? 'Genre' : 'Release Date'
   return (
       <Grid
         className={auxStyles.lowerBorder}
@@ -33,6 +33,3 @@ export default function TopAlbumsHeader({ isMobile, showMoreInfo }: TopAlbumsHea
 }
 
 TopAlbumsHeader.defaultProps = defaultProps;
-        // <GridItem className={auxStyles.headingLabels} colStart={2} colEnd={3}>{showMoreInfo && !isMobile ? 'Album & Artist' : 'Album'}</GridItem>
-        // <GridItem className={auxStyles.headingLabels} colStart={isMobile ? 4 : 3} colEnd={isMobile ? 5 : 4}>{showMoreInfo && !isMobile ? 'Release Date' : 'Artist'}</GridItem>
-        // <GridItem className={auxStyles.headingLabels} colStart={4} colEnd={5} hideOnMobile={isMobile}>{showMoreInfo && !isMobile ? 'Genere' : 'Release Date'}</GridItem>
