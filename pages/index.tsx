@@ -28,6 +28,7 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
 }
 
 function HomePage({topAlbums, heroAlbum}: PageProps) {
+  console.log('admin test: ', heroAlbum);
   const [statefulTopAlbums, setStatefulTopAlbums] = useState(topAlbums);
   const [dirtyInput, setDirtyInput] = useState(false)
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,9 +36,9 @@ function HomePage({topAlbums, heroAlbum}: PageProps) {
 
   const updateWithSearchResults = useCallback(() => {
     const newTopAlbumsArray = topAlbums.filter((album) => {
-      const albumTitleMatch = album.albumTitle.toLowerCase().includes(searchQuery.toLocaleLowerCase());
-      const artistNameMatch = album.artistName.toLowerCase().includes(searchQuery.toLocaleLowerCase());
-      const genreMatch = album.genre.toLowerCase().includes(searchQuery.toLocaleLowerCase());
+      const albumTitleMatch = album.albumTitle.toLowerCase().includes(searchQuery);
+      const artistNameMatch = album.artistName.toLowerCase().includes(searchQuery);
+      const genreMatch = album.genre.toLowerCase().includes(searchQuery);
       return (albumTitleMatch || artistNameMatch || genreMatch);
     });
     const noResults = !Boolean(newTopAlbumsArray.length);
@@ -68,7 +69,7 @@ function HomePage({topAlbums, heroAlbum}: PageProps) {
     if(!loading && e.currentTarget.value.length) {
       setLoading(true);
     }
-    setSearchQuery(e.currentTarget.value);
+    setSearchQuery(e.currentTarget.value.toLowerCase());
   }
 
   const onClickSearchButton = (e: React.MouseEvent<HTMLButtonElement>) => {
