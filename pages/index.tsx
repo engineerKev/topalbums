@@ -8,7 +8,7 @@ import TopAlbums from 'components/TopAlbums';
 import Search from 'components/Search';
 import getHeroAlbum from 'utils/getHeroTopAlbum';
 import TopAlbumsHero from 'components/Hero';
-type PageProps = {
+interface PageProps {
   topAlbums: TopAlbum[]
   heroAlbum: {
     url: string;
@@ -23,12 +23,12 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
     props: {  
       topAlbums,
       heroAlbum
-    }
+    },
+    revalidate: 5,
   };
 }
 
 function HomePage({topAlbums, heroAlbum}: PageProps) {
-  console.log('admin test: ', heroAlbum);
   const [statefulTopAlbums, setStatefulTopAlbums] = useState(topAlbums);
   const [dirtyInput, setDirtyInput] = useState(false)
   const [searchQuery, setSearchQuery] = useState('');

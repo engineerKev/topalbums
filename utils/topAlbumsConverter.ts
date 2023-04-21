@@ -4,8 +4,8 @@ import { TopAlbum } from "types/topAlbumConverter";
 
 function getAlbumCoverObj(feedEntryImgArray: FeedEntryImg[]): FeedEntryImg {
   const sortedArray = feedEntryImgArray.sort((a, b) => parseInt(a.attributes.height) - parseInt(b.attributes.height));
-  const largestAlbumObj = sortedArray[0];
-  return largestAlbumObj;
+  const AlbumObj = sortedArray[0];
+  return AlbumObj;
 }
 
 function getTopAlbum(feedEntry: FeedEntry): TopAlbum {
