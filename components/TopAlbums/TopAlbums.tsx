@@ -108,7 +108,7 @@ export default function TopAlbums({ topAlbums, showLoadingState }: TopAlbumsProp
                     }
                   </GridItem>
                   <GridItem colStart={5} colEnd={6} rowStart={i + 1} rowEnd={i + 2} hideOnMobile={isMobile}>
-                    <MoreInfoButton onClick={(e) => setShowMoreInfo(!showMoreInfo)}>&hellip;</MoreInfoButton>
+                    {showLoadingState ? <Skeleton /> : <MoreInfoButton onClick={(e) => setShowMoreInfo(!showMoreInfo)}>&hellip;</MoreInfoButton>}
                   </GridItem>
                 </React.Fragment>
               )

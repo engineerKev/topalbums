@@ -64,19 +64,23 @@ function HomePage({topAlbums, heroAlbum}: PageProps) {
   }, [statefulTopAlbums]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if(!loading) {
+    if(!loading && e.currentTarget.value.length) {
       setLoading(true);
     }
     setSearchQuery(e.currentTarget.value);
   }
 
   const onClickSearchButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setLoading(true);
+    if(searchQuery) {
+      setLoading(true);
+    }
   }
 
   const onSubmitSearch = (e: React.FormEvent<HTMLFormElement>)  => {
     e.preventDefault();
-    setLoading(true);
+    if(searchQuery) {
+      setLoading(true);
+    }
   }
   return (
     <>
