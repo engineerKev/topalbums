@@ -6,29 +6,27 @@ import getTopAlbumProps from 'utils/topAlbumsConverter';
 import { TopAlbum } from 'types/topAlbumConverter';
 import TopAlbums from 'components/TopAlbums';
 import Search from 'components/Search';
-import getHeroAlbum from 'utils/getHeroTopAlbum';
+import { randomIntFromInterval } from 'utils/getHeroTopAlbum';
 import TopAlbumsHero from 'components/Hero';
 interface PageProps {
   topAlbums: TopAlbum[]
-  heroAlbum: {
-    url: string;
-    height: number;
-  }
 }
 export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<PageProps>> {
   const topAlbumResponse = await request<TopAlbumsAPIResponse | null>("https://itunes.apple.com/us/rss/topalbums/limit=100/json");
   const topAlbums = getTopAlbumProps(topAlbumResponse);
-  const heroAlbum = getHeroAlbum(topAlbumResponse);
   return {
     props: {  
       topAlbums,
-      heroAlbum
     },
     revalidate: 5,
   };
 }
 
-function HomePage({topAlbums, heroAlbum}: PageProps) {
+function HomePage({topAlbums }: PageProps) {
+  const [heroAlbum, setHeroAlbum] = useState({
+    url: '',
+    height: 170
+  });
   const [statefulTopAlbums, setStatefulTopAlbums] = useState(topAlbums);
   const [dirtyInput, setDirtyInput] = useState(false)
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,7 +42,13 @@ function HomePage({topAlbums, heroAlbum}: PageProps) {
     const noResults = !Boolean(newTopAlbumsArray.length);
     return noResults ? [] : [...newTopAlbumsArray] 
   },[searchQuery]);
-
+  useEffect(() => {
+    const heroAlbumIndex = randomIntFromInterval(0, (topAlbums.length -1));
+    setHeroAlbum({
+      url: topAlbums[heroAlbumIndex].heroUrl,
+      height: topAlbums[heroAlbumIndex].heroHeight
+    });
+  }, [])
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if(loading && searchQuery) {
@@ -95,7 +99,7 @@ function HomePage({topAlbums, heroAlbum}: PageProps) {
         onChange={onChange}
         onClick={onClickSearchButton}
       />
-      <TopAlbums topAlbums={statefulTopAlbums} showLoadingState={loading} />
+      <TopAlbums topAlbums={statefulTopAlbums} showLoadingState={loading || (heroAlbum === null)} />
     </>
   )
 }

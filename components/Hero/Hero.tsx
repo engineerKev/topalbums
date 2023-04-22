@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import Grid, {GridItem} from 'components/Grid';
 import Image from 'next/image';
 import auxStyles from 'styles/globalStyles.module.scss';
+import Skeleton from 'components/Skeleton';
 
 interface HeroHeadingProps {
   heroAlbum: {
     url: string;
     height: number;
-  }  
+  }  | null
 }
 
 const HeroHeading = styled.h1`
@@ -27,18 +28,22 @@ export default function TopAlbumsHero({ heroAlbum }: HeroHeadingProps): JSX.Elem
         colGap={20}
       >
         <GridItem className={auxStyles.box} colStart={1} colEnd={2}>
-          <Image 
-            alt="Top 100 Albums"
-            height={heroAlbum.height}
-            loader={() => heroAlbum.url}
-            src={heroAlbum.url}
-            unoptimized={true}
-            width={heroAlbum.height}
-            priority={true}
-          />
+          {heroAlbum.url.length ?
+            <Image 
+              alt="Top 100 Albums"
+              height={heroAlbum.height}
+              loader={() => heroAlbum.url}
+              src={heroAlbum.url}
+              unoptimized={true}
+              width={heroAlbum.height}
+              priority={true}
+            />
+            :
+            <Skeleton width={heroAlbum.height} height={heroAlbum.height} />
+          }
         </GridItem>
         <GridItem colStart={2} colEnd={-1}>
-          <HeroHeading><p>Top</p><p>Albums</p></HeroHeading>
+          <HeroHeading>{heroAlbum.url.length ? (<><p>Top</p><p>Albums</p></>) : <Skeleton height={64} />}</HeroHeading>
         </GridItem>
       </Grid>
   );

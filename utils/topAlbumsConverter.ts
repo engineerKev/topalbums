@@ -2,22 +2,25 @@ import { FeedEntry, TopAlbumsAPIResponse } from "types/API";
 import { FeedEntryImg } from "types/API";
 import { TopAlbum } from "types/topAlbumConverter";
 
-function getAlbumCoverObj(feedEntryImgArray: FeedEntryImg[]): FeedEntryImg {
+function getAlbumCoverObj(feedEntryImgArray: FeedEntryImg[]): FeedEntryImg[] {
   const sortedArray = feedEntryImgArray.sort((a, b) => parseInt(a.attributes.height) - parseInt(b.attributes.height));
-  const AlbumObj = sortedArray[0];
-  return AlbumObj;
+  const albumObj = sortedArray[0];
+  const heroObj = sortedArray[sortedArray.length - 1];
+  return [albumObj, heroObj];
 }
 
 function getTopAlbum(feedEntry: FeedEntry): TopAlbum {
-  const albumCoverObj = getAlbumCoverObj(feedEntry["im:image"]);
+  const [albumObj, heroObj] = getAlbumCoverObj(feedEntry["im:image"]);
   return {
-    albumCoverImgLink: albumCoverObj.label,
-    albumCoverImgHeight: parseInt(albumCoverObj.attributes.height),
+    albumCoverImgLink: albumObj.label,
+    albumCoverImgHeight: parseInt(albumObj.attributes.height),
     albumTitle: feedEntry["im:name"].label,
     artistName: feedEntry["im:artist"].label,
     id: feedEntry.id.attributes["im:id"],
     genre: feedEntry.category.attributes.term,
-    releaseDate: feedEntry["im:releaseDate"].attributes.label
+    releaseDate: feedEntry["im:releaseDate"].attributes.label,
+    heroUrl: heroObj.label,
+    heroHeight: parseInt(heroObj.attributes.height)
   }
 }
 

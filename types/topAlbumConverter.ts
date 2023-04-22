@@ -9,4 +9,6 @@ export type TopAlbum = AlbumCoverImg & {
   id: string;
   genre: string;
   releaseDate: string;
+  heroUrl: string;
+  heroHeight: number;
 }
