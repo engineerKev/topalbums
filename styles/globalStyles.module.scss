@@ -1,10 +1,10 @@
 .box {
-    box-shadow: 0 0.175em 0.1375em rgba(0, 0, 0, 0.034),
-      0 0.4188em 0.3312em rgba(0, 0, 0, 0.048),
-      0 0.7813em 0.625em rgba(0, 0, 0, 0.06),
-      0 1.3938em 1.1187em rgba(0, 0, 0, 0.072),
-      0 2.6125em 2.0875em rgba(0, 0, 0, 0.086),
-      0 6.25em 5em rgba(0, 0, 0, 0.12)
+    box-shadow: 0 0.1875em 0.12em rgba(0, 0, 0, 0.034),
+      0 0.4375em 0.375em rgba(0, 0, 0, 0.048),
+      0 0.8125em 0.625em rgba(0, 0, 0, 0.06),
+      0 1.375em 1.125em rgba(0, 0, 0, 0.072),
+      0 2.625em 2.0625em rgba(0, 0, 0, 0.086),
+      0 1.25em 1em rgba(0, 0, 0, 0.12)
  }
 
 .outline {
@@ -24,4 +24,5 @@
 
 .lowerBorder {
   border-bottom: 0.0625em solid #aaa;
+  margin-bottom: 0.25em;
 }

@@ -4,15 +4,17 @@ import request from 'utils/request';
 import { TopAlbumsAPIResponse } from 'types/API';
 import getTopAlbumProps from 'utils/topAlbumsConverter';
 import { TopAlbum } from 'types/topAlbumConverter';
-import TopAlbums from 'components/TopAlbums';
+import TopAlbums from 'components/TopAlbums/Grid';
 import Search from 'components/Search';
 import { randomIntFromInterval } from 'utils/getHeroTopAlbum';
 import TopAlbumsHero from 'components/Hero';
+import Table from 'components/Table';
+import TopAlbumsTable from 'components/TopAlbumsTable';
 interface PageProps {
   topAlbums: TopAlbum[]
 }
 export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<PageProps>> {
-  const topAlbumResponse = await request<TopAlbumsAPIResponse | null>("https://itunes.apple.com/us/rss/topalbums/limit=100/json");
+  const topAlbumResponse = await request<TopAlbumsAPIResponse | null>("https://itunes.apple.com/us/rss/topalbums/limit=25/json", { next: { revalidate: 30 }});
   const topAlbums = getTopAlbumProps(topAlbumResponse);
   return {
     props: {  
@@ -99,7 +101,7 @@ function HomePage({topAlbums }: PageProps) {
         onChange={onChange}
         onClick={onClickSearchButton}
       />
-      <TopAlbums topAlbums={statefulTopAlbums} showLoadingState={loading || (heroAlbum === null)} />
+      <TopAlbumsTable showLoadingState={loading || (heroAlbum === null)} topAlbums={statefulTopAlbums} />
     </>
   )
 }

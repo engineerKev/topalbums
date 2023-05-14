@@ -6,10 +6,11 @@ import Grid, { GridItem } from 'components/Grid';
 import TopAlbumsHeader from './TopAlbumsHeader';
 import Skeleton from 'components/Skeleton';
 import auxStyles from 'styles/globalStyles.module.scss';
+import { MoreInfoButton, NoResultsHeading } from '../TopAlbumsStyled.components';
 import useWindowSize from 'hooks/useWindowSize';
 
 interface TopAlbumsProps {
-  topAlbums: TopAlbum[],
+  topAlbums: TopAlbum[];
   showLoadingState: boolean;
 };
 
@@ -24,22 +25,6 @@ const InfoDiv = styled.div`
   padding: 0.25em;
 `;
 
-const NoResultsHeading = styled.h2`
-  text-align: center;
-  font-size: 2em;
-`;
-const MoreInfoButton = styled.button`
-  background-color: transparent;
-  border-radius: 50%;
-  font-size: 1em;
-  width: 2em;
-  height: 2em;
-  border: 1px solid #ccc;
-  display: flex;
-  justify-content: center;
-  justify-self: center;
-  cursor: pointer;
-`
 export default function TopAlbums({ topAlbums, showLoadingState }: TopAlbumsProps): JSX.Element {
   const { isMobile } = useWindowSize();
   const [showMoreInfo, setShowMoreInfo] = useState(false);
