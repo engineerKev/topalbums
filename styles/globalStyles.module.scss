@@ -26,3 +26,19 @@
   border-bottom: 0.0625em solid #aaa;
   margin-bottom: 0.25em;
 }
+
+.tabletOnlyElement {
+  display: none;
+}
+
+@media (min-width: 48em) {
+  .tabletOnlyElement {
+      display: table-cell;
+  }
+}
+
+  @media (min-width: 17.5em) and (max-width: 51.25em) {
+  .desktopOnlyElement {
+    display: none;
+  }
+}

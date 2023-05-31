@@ -23,7 +23,7 @@ export default function TopAlbumsTable({ topAlbums, showLoadingState }: TopAlbum
         tableData={topAlbums}
         showMoreInfo={showMoreInfo}
         setShowMoreInfo={setShowMoreInfo}
-        showLoadingState={showLoadingState}
+        showLoadingState={isMobile === null || isTablet === null || showLoadingState}
       />
     </Table>
   )

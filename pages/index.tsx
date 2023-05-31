@@ -20,7 +20,7 @@ export async function getStaticProps(context: GetStaticPropsContext): Promise<Ge
     props: {  
       topAlbums,
     },
-    revalidate: 5,
+    revalidate: 60,
   };
 }
 
@@ -50,7 +50,8 @@ function HomePage({topAlbums }: PageProps) {
       url: topAlbums[heroAlbumIndex].heroUrl,
       height: topAlbums[heroAlbumIndex].heroHeight
     });
-  }, [])
+  }, []);
+
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if(loading && searchQuery) {

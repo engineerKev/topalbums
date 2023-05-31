@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { TopAlbum } from 'types/topAlbumConverter';
 import { StyledTd } from 'components/TopAlbums/TopAlbumsStyled.components';
 import Skeleton from 'components/Skeleton';
-import { MoreInfoButton, InnerFlexDiv, NoResultsHeading, FixexMobileWidthDiv } from 'components/TopAlbums/TopAlbumsStyled.components';
+import { MoreInfoButton, InnerFlexDiv, NoResultsHeading, FixedMobileWidthDiv } from 'components/TopAlbums/TopAlbumsStyled.components';
+import auxStyles from 'styles/globalStyles.module.scss';
 
 interface TopAlbumsTableBodyProps {
   tableData: TopAlbum[],
@@ -21,13 +22,10 @@ const defaultProps = {
   isTablet: false,
 }
 
-export default function TopAlbumsTableBody({tableData, showLoadingState, showMoreInfo, setShowMoreInfo, isMobile, isTablet}: TopAlbumsTableBodyProps) {
+export default function TopAlbumsTableBody({tableData, showLoadingState, showMoreInfo, setShowMoreInfo, isTablet, isMobile}: TopAlbumsTableBodyProps) {
+  const { desktopOnlyElement, tabletOnlyElement} = auxStyles;
   const colWidth = tableData[0]?.albumCoverImgHeight || 60;
   const rowHeight = colWidth;
-  const tdProps = {};
-  if(isTablet) {
-    tdProps['width'] = '235';
-  }
   return (
       <tbody>
         { !tableData.length ?
@@ -57,43 +55,6 @@ export default function TopAlbumsTableBody({tableData, showLoadingState, showMor
                     />)
                   }
                 </StyledTd>
-                <StyledTd {...tdProps}>
-                  {showLoadingState ?
-                    <Skeleton />
-                    :
-                    (
-                      <>
-                        {showMoreInfo || isMobile ?
-                          <>
-                            <FixexMobileWidthDiv>{datum.albumTitle}</FixexMobileWidthDiv>
-                            <FixexMobileWidthDiv>{datum.artistName}</FixexMobileWidthDiv>
-                          </>
-                          :
-                          datum.albumTitle
-                        }
-                      </>
-                    )
-                  }
-                </StyledTd>
-                {isTablet ?
-                  (<StyledTd>
-                    {showLoadingState ?
-                      <Skeleton />
-                      :
-                      (
-                        <>
-                          {showMoreInfo || isTablet ?
-                            datum.releaseDate
-                            :
-                            datum.artistName
-                          }
-                        </>
-                      )
-                    }
-                  </StyledTd>)
-                  :
-                  null
-              }
                 <StyledTd>
                   {showLoadingState ?
                     <Skeleton />
@@ -101,27 +62,56 @@ export default function TopAlbumsTableBody({tableData, showLoadingState, showMor
                     (
                       <>
                         {showMoreInfo || isMobile ?
-                          datum.genre
+                          <>
+                            <FixedMobileWidthDiv>{datum.albumTitle}</FixedMobileWidthDiv>
+                            <FixedMobileWidthDiv>{datum.artistName}</FixedMobileWidthDiv>
+                          </>
                           :
-                          datum.releaseDate
+                          <FixedMobileWidthDiv>{datum.albumTitle}</FixedMobileWidthDiv>
                         }
                       </>
                     )
                   }
                 </StyledTd>
-                {isMobile ?
-                  null
-                  :
-                  (<StyledTd>
-                    {showLoadingState ?
-                      <Skeleton />
-                      :
-                      <InnerFlexDiv>
-                        <MoreInfoButton onClick={(e) => setShowMoreInfo(!showMoreInfo)}>&hellip;</MoreInfoButton>
-                      </InnerFlexDiv>
-                    }
-                  </StyledTd>)
-                }
+                <StyledTd>
+                  {showLoadingState ?
+                    <Skeleton />
+                    :
+                    (
+                      <FixedMobileWidthDiv>
+                        {showMoreInfo || isMobile ?
+                          datum.genre
+                          :
+                          datum.artistName
+                        }
+                      </FixedMobileWidthDiv>
+                    )
+                  }
+                </StyledTd> 
+                <StyledTd className={tabletOnlyElement}>
+                  {showLoadingState ?
+                    <Skeleton />
+                    :
+                    (
+                      <>
+                        {showMoreInfo || isTablet ?
+                          datum.releaseDate
+                          :
+                          datum.genre
+                        }
+                      </>
+                    )
+                  }
+                </StyledTd>
+                <StyledTd className={desktopOnlyElement}>
+                  {showLoadingState ?
+                    <Skeleton />
+                    :
+                    <InnerFlexDiv>
+                      <MoreInfoButton onClick={(e) => setShowMoreInfo(!showMoreInfo)}>&hellip;</MoreInfoButton>
+                    </InnerFlexDiv>
+                  }
+                </StyledTd>
               </tr>
             )
           })
