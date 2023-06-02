@@ -7,3 +7,8 @@ export default async function request<TAPIResponse>(url: string, config: Request
     return null;
   }
 };
+
+export async function fetcher<JSON = any>(input: RequestInfo, init?: RequestInit): Promise<JSON> {
+  const res = await fetch(input, init);
+  return res.json();
+}

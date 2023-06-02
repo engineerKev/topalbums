@@ -1,41 +1,28 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { GetStaticPropsContext, GetStaticPropsResult } from 'next';
-import request from 'utils/request';
-import { TopAlbumsAPIResponse } from 'types/API';
+import React, { useState, useCallback, useEffect } from 'react';
 import getTopAlbumProps from 'utils/topAlbumsConverter';
-import { TopAlbum } from 'types/topAlbumConverter';
-import TopAlbums from 'components/TopAlbums/Grid';
 import Search from 'components/Search';
 import { randomIntFromInterval } from 'utils/getHeroTopAlbum';
 import TopAlbumsHero from 'components/Hero';
-import Table from 'components/Table';
 import TopAlbumsTable from 'components/TopAlbumsTable';
-interface PageProps {
-  topAlbums: TopAlbum[]
-}
-export async function getStaticProps(context: GetStaticPropsContext): Promise<GetStaticPropsResult<PageProps>> {
-  const topAlbumResponse = await request<TopAlbumsAPIResponse | null>("https://itunes.apple.com/us/rss/topalbums/limit=25/json", { next: { revalidate: 30 }});
-  const topAlbums = getTopAlbumProps(topAlbumResponse);
-  return {
-    props: {  
-      topAlbums,
-    },
-    revalidate: 60,
-  };
-}
+import useTopAlbums from 'hooks/useTopAlbums';
 
-function HomePage({topAlbums }: PageProps) {
+const TOTALPLACEHOLDERS = 25;
+const INITALTOPALBUMSSTATE = Array(TOTALPLACEHOLDERS).fill({});
+
+function HomePage() {
+  const { topAlbumsData, topAlbumsError, isLoading } = useTopAlbums();
   const [heroAlbum, setHeroAlbum] = useState({
     url: '',
     height: 170
   });
-  const [statefulTopAlbums, setStatefulTopAlbums] = useState(topAlbums);
+  const [topAlbums, setTopAlbums] = useState(INITALTOPALBUMSSTATE);
   const [dirtyInput, setDirtyInput] = useState(false)
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loadingSearch, setLoadingSearch] = useState(false);
 
   const updateWithSearchResults = useCallback(() => {
-    const newTopAlbumsArray = topAlbums.filter((album) => {
+    const allTopAlbums = getTopAlbumProps(topAlbumsData);
+    const newTopAlbumsArray = allTopAlbums.filter((album) => {
       const albumTitleMatch = album.albumTitle.toLowerCase().includes(searchQuery);
       const artistNameMatch = album.artistName.toLowerCase().includes(searchQuery);
       const genreMatch = album.genre.toLowerCase().includes(searchQuery);
@@ -44,56 +31,61 @@ function HomePage({topAlbums }: PageProps) {
     const noResults = !Boolean(newTopAlbumsArray.length);
     return noResults ? [] : [...newTopAlbumsArray] 
   },[searchQuery]);
+
   useEffect(() => {
-    const heroAlbumIndex = randomIntFromInterval(0, (topAlbums.length -1));
-    setHeroAlbum({
-      url: topAlbums[heroAlbumIndex].heroUrl,
-      height: topAlbums[heroAlbumIndex].heroHeight
-    });
-  }, []);
+    if(topAlbumsData && !isLoading) {
+      const convertedTopAlbumsResponse = getTopAlbumProps(topAlbumsData);
+      const heroAlbumIndex = randomIntFromInterval(0, (convertedTopAlbumsResponse.length -1));
+      setTopAlbums(convertedTopAlbumsResponse);
+      setHeroAlbum({
+        url: convertedTopAlbumsResponse[heroAlbumIndex].heroUrl,
+        height: convertedTopAlbumsResponse[heroAlbumIndex].heroHeight
+      });
+    }
+  }, [isLoading, topAlbumsData]);
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      if(loading && searchQuery) {
+      if(loadingSearch && searchQuery) {
         const searchResults = updateWithSearchResults();
-        setStatefulTopAlbums(searchResults);
+        setTopAlbums(searchResults);
       }
       if(dirtyInput && !searchQuery.length) {
-        setStatefulTopAlbums(topAlbums);
+        setTopAlbums(getTopAlbumProps(topAlbumsData));
       }
     }, 1000);
     return () => clearTimeout(delayDebounce)
-  }, [loading, searchQuery, dirtyInput]);
+  }, [loadingSearch, searchQuery, dirtyInput]);
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      setLoading(false);
+      setLoadingSearch(false);
     }, 500);
     return () => clearTimeout(delayDebounce)
-  }, [statefulTopAlbums]);
+  }, [topAlbums]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if(!loading && e.currentTarget.value.length) {
-      setLoading(true);
+    if(!loadingSearch && e.currentTarget.value.length) {
+      setLoadingSearch(true);
     }
     setSearchQuery(e.currentTarget.value.toLowerCase());
   }
 
   const onClickSearchButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     if(searchQuery) {
-      setLoading(true);
+      setLoadingSearch(true);
     }
   }
 
   const onSubmitSearch = (e: React.FormEvent<HTMLFormElement>)  => {
     e.preventDefault();
     if(searchQuery) {
-      setLoading(true);
+      setLoadingSearch(true);
     }
   }
   return (
     <>
-      <TopAlbumsHero heroAlbum={heroAlbum} />
+      <TopAlbumsHero heroAlbum={heroAlbum} showLoadingState={isLoading} />
       <Search 
         placeholder='Search Albums' 
         onSubmit={onSubmitSearch} 
@@ -102,7 +94,7 @@ function HomePage({topAlbums }: PageProps) {
         onChange={onChange}
         onClick={onClickSearchButton}
       />
-      <TopAlbumsTable showLoadingState={loading || (heroAlbum === null)} topAlbums={statefulTopAlbums} />
+      <TopAlbumsTable showLoadingState={isLoading || loadingSearch || (heroAlbum === null)} topAlbums={topAlbums} />
     </>
   )
 }

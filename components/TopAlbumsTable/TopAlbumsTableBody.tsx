@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { TopAlbum } from 'types/topAlbumConverter';
 import { StyledTd } from 'components/TopAlbums/TopAlbumsStyled.components';
 import Skeleton from 'components/Skeleton';
 import { MoreInfoButton, InnerFlexDiv, NoResultsHeading, FixedMobileWidthDiv } from 'components/TopAlbums/TopAlbumsStyled.components';
 import auxStyles from 'styles/globalStyles.module.scss';
+
+const DEFAULTCOLWIDTH = 60;
 
 interface TopAlbumsTableBodyProps {
   tableData: TopAlbum[],
@@ -24,24 +26,26 @@ const defaultProps = {
 
 export default function TopAlbumsTableBody({tableData, showLoadingState, showMoreInfo, setShowMoreInfo, isTablet, isMobile}: TopAlbumsTableBodyProps) {
   const { desktopOnlyElement, tabletOnlyElement} = auxStyles;
-  const colWidth = tableData[0]?.albumCoverImgHeight || 60;
+  const colWidth = tableData[0]?.albumCoverImgHeight || DEFAULTCOLWIDTH;
   const rowHeight = colWidth;
+  if(!showLoadingState && !tableData.length) {
+    return (
+      <tbody>
+        <tr>
+          <StyledTd colSpan={5}>
+            <NoResultsHeading>Sorry No Albumbs Matched Your Search Criteria</NoResultsHeading>
+          </StyledTd>
+        </tr>
+      </tbody>
+    )
+  }
   return (
       <tbody>
-        { !tableData.length ?
-            (
-              <tr>
-                <StyledTd colSpan={5}>
-                  <NoResultsHeading>Sorry No Albumbs Matched Your Search Criteria</NoResultsHeading>
-                </StyledTd>
-              </tr>
-            )
-          :
-          (tableData.map((datum, i) => {
+          {tableData.map((datum, i) => {
             return (
-              <tr key={datum.id}>
+              <tr key={datum?.id || `skeleton-row-${i}`}>
                 <StyledTd width={colWidth}>
-                  {showLoadingState ?
+                  {showLoadingState || !Object.keys(datum).length ?
                     <Skeleton height={rowHeight} width={colWidth} />
                     :
                     (<Image
@@ -56,7 +60,7 @@ export default function TopAlbumsTableBody({tableData, showLoadingState, showMor
                   }
                 </StyledTd>
                 <StyledTd>
-                  {showLoadingState ?
+                  {showLoadingState || !Object.keys(datum).length ?
                     <Skeleton />
                     :
                     (
@@ -74,7 +78,7 @@ export default function TopAlbumsTableBody({tableData, showLoadingState, showMor
                   }
                 </StyledTd>
                 <StyledTd>
-                  {showLoadingState ?
+                  {showLoadingState || !Object.keys(datum).length ?
                     <Skeleton />
                     :
                     (
@@ -89,7 +93,7 @@ export default function TopAlbumsTableBody({tableData, showLoadingState, showMor
                   }
                 </StyledTd> 
                 <StyledTd className={tabletOnlyElement}>
-                  {showLoadingState ?
+                  {showLoadingState || !Object.keys(datum).length ?
                     <Skeleton />
                     :
                     (
@@ -104,7 +108,7 @@ export default function TopAlbumsTableBody({tableData, showLoadingState, showMor
                   }
                 </StyledTd>
                 <StyledTd className={desktopOnlyElement}>
-                  {showLoadingState ?
+                  {showLoadingState || !Object.keys(datum).length ?
                     <Skeleton />
                     :
                     <InnerFlexDiv>
@@ -115,7 +119,7 @@ export default function TopAlbumsTableBody({tableData, showLoadingState, showMor
               </tr>
             )
           })
-        )}
+        }
       </tbody>
   )
 };

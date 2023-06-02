@@ -4,13 +4,17 @@ import Grid, {GridItem} from 'components/Grid';
 import Image from 'next/image';
 import auxStyles from 'styles/globalStyles.module.scss';
 import Skeleton from 'components/Skeleton';
+import { TopAlbum } from 'types/topAlbumConverter';
+import { randomIntFromInterval } from 'utils/getHeroTopAlbum';
 
 interface HeroHeadingProps {
   heroAlbum: {
     url: string;
     height: number;
-  }  | null
+  }  | null,
+  showLoadingState: boolean
 }
+const DEFAULTSQUARESIZE = 170;
 
 const HeroHeading = styled.h1`
   font-size: 4rem;
@@ -20,15 +24,16 @@ const HeroHeading = styled.h1`
   }
 `;
 
-export default function TopAlbumsHero({ heroAlbum }: HeroHeadingProps): JSX.Element {
+export default function TopAlbumsHero({ heroAlbum, showLoadingState }: HeroHeadingProps): JSX.Element {
+
   return (
       <Grid
-        colMin={heroAlbum.height}
-        rowMax={heroAlbum.height}
+        colMin={showLoadingState || !(heroAlbum.height) ? DEFAULTSQUARESIZE : heroAlbum.height}
+        rowMax={showLoadingState || !(heroAlbum.height) ? DEFAULTSQUARESIZE : heroAlbum.height}
         colGap={20}
       >
         <GridItem className={auxStyles.box} colStart={1} colEnd={2}>
-          {heroAlbum.url.length ?
+          {!showLoadingState && heroAlbum?.url?.length ?
             <Image 
               alt="Top 100 Albums"
               height={heroAlbum.height}
@@ -39,11 +44,16 @@ export default function TopAlbumsHero({ heroAlbum }: HeroHeadingProps): JSX.Elem
               priority={true}
             />
             :
-            <Skeleton width={heroAlbum.height} height={heroAlbum.height} />
+            <Skeleton width={DEFAULTSQUARESIZE} height={DEFAULTSQUARESIZE} />
           }
         </GridItem>
         <GridItem colStart={2} colEnd={-1}>
-          <HeroHeading>{heroAlbum.url.length ? (<><p>Top</p><p>Albums</p></>) : <Skeleton height={64} />}</HeroHeading>
+          <HeroHeading>
+            <>
+              {showLoadingState ? <Skeleton height={64} width={256} margin={24}/> : <p>Top</p>}
+              {showLoadingState ? <Skeleton height={64} width={288} margin={24} /> : <p>Albums</p>}
+            </>
+          </HeroHeading>
         </GridItem>
       </Grid>
   );

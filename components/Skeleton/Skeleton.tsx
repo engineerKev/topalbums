@@ -4,6 +4,7 @@ import styled, { keyframes, css } from 'styled-components';
 interface SkeletonProps {
   height?: string | number;
   width?: string | number;
+  margin?: number
 };
 const skeleton = keyframes`
   to {
@@ -21,11 +22,13 @@ const SkeletonContainer = styled.div.attrs<SkeletonProps>(props => ({
   style: {
     width: typeof props.width === 'number' ? `${props.width}px` : props.width,
     height: typeof props.height === 'number' ? `${props.height}px` : props.height,
+    margin: `${props.margin}px 0`,
   }
 }))``;
 const defaultProps = {
   width: '100%',
   height: '16px',
+  margin: 0
 };
 
 const SkeletonElement = styled.div(() => [skeletonCss]);
