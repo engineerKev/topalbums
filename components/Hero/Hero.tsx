@@ -4,8 +4,6 @@ import Grid, {GridItem} from 'components/Grid';
 import Image from 'next/image';
 import auxStyles from 'styles/globalStyles.module.scss';
 import Skeleton from 'components/Skeleton';
-import { TopAlbum } from 'types/topAlbumConverter';
-import { randomIntFromInterval } from 'utils/getHeroTopAlbum';
 
 interface HeroHeadingProps {
   heroAlbum: {
@@ -25,7 +23,6 @@ const HeroHeading = styled.h1`
 `;
 
 export default function TopAlbumsHero({ heroAlbum, showLoadingState }: HeroHeadingProps): JSX.Element {
-
   return (
       <Grid
         colMin={showLoadingState || !(heroAlbum.height) ? DEFAULTSQUARESIZE : heroAlbum.height}
@@ -50,8 +47,8 @@ export default function TopAlbumsHero({ heroAlbum, showLoadingState }: HeroHeadi
         <GridItem colStart={2} colEnd={-1}>
           <HeroHeading>
             <>
-              {showLoadingState ? <Skeleton height={64} width={256} margin={24}/> : <p>Top</p>}
-              {showLoadingState ? <Skeleton height={64} width={288} margin={24} /> : <p>Albums</p>}
+              {showLoadingState ? <Skeleton height={64} width={128} margin={24}/> : <p>Top</p>}
+              {showLoadingState ? <Skeleton height={64} width={128} margin={24} /> : <p>Albums</p>}
             </>
           </HeroHeading>
         </GridItem>

@@ -44,26 +44,6 @@ function HomePage() {
     }
   }, [isLoading, topAlbumsData]);
 
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if(loadingSearch && searchQuery) {
-        const searchResults = updateWithSearchResults();
-        setTopAlbums(searchResults);
-      }
-      if(dirtyInput && !searchQuery.length) {
-        setTopAlbums(getTopAlbumProps(topAlbumsData));
-      }
-    }, 1000);
-    return () => clearTimeout(delayDebounce)
-  }, [loadingSearch, searchQuery, dirtyInput]);
-
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      setLoadingSearch(false);
-    }, 500);
-    return () => clearTimeout(delayDebounce)
-  }, [topAlbums]);
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(!loadingSearch && e.currentTarget.value.length) {
       setLoadingSearch(true);
@@ -79,14 +59,19 @@ function HomePage() {
 
   const onSubmitSearch = (e: React.FormEvent<HTMLFormElement>)  => {
     e.preventDefault();
-    if(searchQuery) {
-      setLoadingSearch(true);
+    if(searchQuery.length) {
+      const searchResults = updateWithSearchResults();
+      setTopAlbums(searchResults);
+    } else {
+      setTopAlbums(getTopAlbumProps(topAlbumsData));
     }
+    setLoadingSearch(false);
   }
   return (
     <>
       <TopAlbumsHero heroAlbum={heroAlbum} showLoadingState={isLoading} />
-      <Search 
+      <Search
+        buttonType='submit'
         placeholder='Search Albums' 
         onSubmit={onSubmitSearch} 
         onBlur={(e) => setDirtyInput(true)} 
@@ -94,7 +79,7 @@ function HomePage() {
         onChange={onChange}
         onClick={onClickSearchButton}
       />
-      <TopAlbumsTable showLoadingState={isLoading || loadingSearch || (heroAlbum === null)} topAlbums={topAlbums} />
+      <TopAlbumsTable showLoadingState={isLoading || loadingSearch } topAlbums={topAlbums} />
     </>
   )
 }

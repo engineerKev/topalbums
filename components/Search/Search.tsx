@@ -4,10 +4,11 @@ import styled from 'styled-components';
 interface SearchProps {
   defaultValue: string;
   placeholder: string;
+  buttonType: 'button' | 'submit';
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: (e:React.MouseEvent<HTMLButtonElement>) => void; 
+  onClick: (e:React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const Form = styled.form`
@@ -61,7 +62,8 @@ const Label = styled.label`
   }
 `;
 
-export default function Search({defaultValue, placeholder, onSubmit, onChange, onClick, onBlur}: SearchProps) {
+export default function Search({defaultValue, placeholder, onSubmit, onChange, onClick, onBlur, buttonType}: SearchProps) {
+  const onClickPropObj = buttonType === 'submit' ? {} : { onClick };
   return (
       <Form onSubmit={onSubmit}>
         <Label htmlFor="album-search-box">
@@ -74,7 +76,7 @@ export default function Search({defaultValue, placeholder, onSubmit, onChange, o
             onChange={onChange}
           />
         </Label>
-        <Button type='button' onClick={onClick}>&#x1F50E;</Button>
+        <Button type={buttonType} {...onClickPropObj}>&#x1F50E;</Button>
       </Form>
   )
 }
