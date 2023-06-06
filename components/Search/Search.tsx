@@ -77,5 +77,3 @@ export default function Search({defaultValue, placeholder, onSubmit, onChange, o
       </Form>
   )
 }
-
-Search.defaultProps = defaultProps;
