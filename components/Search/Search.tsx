@@ -8,7 +8,7 @@ interface SearchProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onClick: (e:React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e:React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const Form = styled.form`
@@ -61,7 +61,9 @@ const Label = styled.label`
     align-self: flex-end;
   }
 `;
-
+const defaultProps = {
+  onClick: () => void
+}
 export default function Search({defaultValue, placeholder, onSubmit, onChange, onClick, onBlur, buttonType}: SearchProps) {
   const onClickPropObj = buttonType === 'submit' ? {} : { onClick };
   return (
@@ -80,3 +82,5 @@ export default function Search({defaultValue, placeholder, onSubmit, onChange, o
       </Form>
   )
 }
+
+Search.defaultProps = defaultProps;
