@@ -44,17 +44,21 @@ function HomePage() {
     }
   }, [isLoading, topAlbumsData]);
 
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      if(dirtyInput && !searchQuery.length) {
+        setTopAlbums(getTopAlbumProps(topAlbumsData));
+        setLoadingSearch(false);
+      }
+    }, 1000);
+    return () => clearTimeout(delayDebounce)
+  }, [dirtyInput, searchQuery])
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(!loadingSearch && e.currentTarget.value.length) {
       setLoadingSearch(true);
     }
     setSearchQuery(e.currentTarget.value.toLowerCase());
-  }
-
-  const onClickSearchButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if(searchQuery) {
-      setLoadingSearch(true);
-    }
   }
 
   const onSubmitSearch = (e: React.FormEvent<HTMLFormElement>)  => {
@@ -77,7 +81,6 @@ function HomePage() {
         onBlur={(e) => setDirtyInput(true)} 
         defaultValue={searchQuery}
         onChange={onChange}
-        onClick={onClickSearchButton}
       />
       <TopAlbumsTable showLoadingState={isLoading || loadingSearch } topAlbums={topAlbums} />
     </>
