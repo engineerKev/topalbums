@@ -55,7 +55,6 @@ export default function TopAlbumsTableBody({tableData, showLoadingState, showMor
                       src={datum.albumCoverImgLink}
                       unoptimized={true}
                       width={datum.albumCoverImgHeight}
-                      priority={i < 30}
                     />)
                   }
                 </StyledTd>

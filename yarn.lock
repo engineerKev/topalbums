@@ -1475,15 +1475,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-table@npm:^7.8.0":
-  version: 7.8.0
-  resolution: "react-table@npm:7.8.0"
-  peerDependencies:
-    react: ^16.8.3 || ^17.0.0-0 || ^18.0.0
-  checksum: 44ca0fb848c6869cd793cede8dc33072b38ebb8f8d2833565afe7cf3eac5d1fa455ac5fb9d06838b16fab0523d5d03e3e82f7645032f71245096e67b892313b9
-  languageName: node
-  linkType: hard
-
 "react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
@@ -1541,7 +1532,6 @@ __metadata:
     next: ^13.3.0
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-table: ^7.8.0
     sass: ^1.62.0
     styled-components: ^5.0.0
     swr: ^2.1.5

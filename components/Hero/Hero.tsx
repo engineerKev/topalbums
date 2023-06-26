@@ -47,8 +47,8 @@ export default function TopAlbumsHero({ heroAlbum, showLoadingState }: HeroHeadi
         <GridItem colStart={2} colEnd={-1}>
           <HeroHeading>
             <>
-              {showLoadingState ? <Skeleton height={64} width={128} margin={24}/> : <p>Top</p>}
-              {showLoadingState ? <Skeleton height={64} width={128} margin={24} /> : <p>Albums</p>}
+              <p>Top</p>
+              <p>Albums</p>
             </>
           </HeroHeading>
         </GridItem>

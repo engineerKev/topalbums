@@ -2,29 +2,33 @@
   font-family: 'JosefinSlab';
   font-weight: 700;
   src: url("/fonts/JosefinSlab-Bold.ttf") format("truetype");
+  font-display: swap;
 }
 @font-face {
   font-family: 'JosefinSlab';
   font-weight: 300;
   src: url("/fonts/JosefinSlab-Light.ttf") format("truetype");
+  font-display: swap;
 }
 @font-face {
   font-family: 'JosefinSlab';
   font-weight: 500;
   src: url("/fonts/JosefinSlab-Medium.ttf") format("truetype");
+  font-display: swap;
 }
 @font-face {
   font-family: 'JosefinSlab';
   font-weight: 400;
   src: url("/fonts/JosefinSlab-Regular.ttf") format("truetype");
+  font-display: swap;
 }
 @font-face {
   font-family: 'JosefinSlab';
   font-weight: 600;
   src: url("/fonts/JosefinSlab-SemiBold.ttf") format("truetype");
+  font-display: swap;
 }
 html, body {
-  font-display: swap;
   font-size: 16px;
   font-family: 'JosefinSlab', Helvetica, sans-serif;
   font-weight: 600;
